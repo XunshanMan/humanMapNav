@@ -1,0 +1,11 @@
+_type = {str} 'sensor_msgs/LaserScan'
+angle_increment = {float} 0.00613592332229
+angle_max = {float} 2.09234976768
+angle_min = {float} -2.35619449615
+header = {Header} seq: 3524\nstamp: \n  secs: 1512100410\n  nsecs: 957636632\nframe_id: "laser"
+intensities = {tuple} <type 'tuple'>: ()
+range_max = {float} 5.59999990463
+range_min = {float} 0.019999999553
+ranges = {tuple} <type 'tuple'>: <Too big to print. Len: 726>
+scan_time = {float} 0.10000000149
+time_increment = {float} 9.76562732831e-05

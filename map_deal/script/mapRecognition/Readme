@@ -1,0 +1,16 @@
+该模块作用为对人类地图进行人工预处理，此部分独立于ros，直接人工进行操作。
+
+1、将人类地图二值化提取墙壁
+roomPositionPreDeal.py
+
+2、使用画图软件填充掉非封闭区域
+画图
+
+3、对图像进行满水填充
+floodfill_demo.py
+（使用按键s保存图像）
+
+4、将漫水填充区域提出为二值图像
+extractCorridor.py
+
+最终获得二值图状态的走廊图，位置为 ./pic/debug/corridor_dealt2.jpg
