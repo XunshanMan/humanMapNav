@@ -1,0 +1,1 @@
+sudo apt-get install ros-kinetic-gazebo-ros ros-kinetic-kobuki-gazebo-plugins ros-kinetic-turtlebot ros-kinetic-turtlebot-apps ros-kinetic-turtlebot-interactions ros-kinetic-turtlebot-simulator ros-kinetic-kobuki-ftdi ros-kinetic-rocon-remocon ros-kinetic-rocon-qt-library ros-kinetic-ar-track-alvar-msgs

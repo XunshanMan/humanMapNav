@@ -1,0 +1,24 @@
+<launch>
+        <node pkg="amcl" type="amcl" respawn="true" name="amcl" />
+        <node pkg="rviz" name="rviz" type="rviz" output="screen"/>
+        <node pkg="map_server" name="map_server" type="map_server" args="/home/jk/bag_lzw/map/3AForMatch/full_3A.yaml" output="screen"/>
+        <node pkg="rosaria" type="RosAria" name="RosAria" args="_port:=10.10.100.254:8101 /RosAria/cmd_vel:=/cmd_vel" respawn="true" />
+        <node name="base2laser" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 1 /base_link /laser 100"/>
+	 <node name="rplidarNode"  pkg="rplidar_ros"  type="rplidarNode" output="screen">
+	         <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
+	         <param name="serial_baudrate"     type="int"    value="115200"/>
+	         <param name="frame_id"            type="string" value="laser"/>
+	         <param name="inverted"            type="bool"   value="false"/>
+	         <param name="angle_compensate"    type="bool"   value="true"/>
+	 </node>
+
+<!-- scale_node is running under python IDE -->
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ros_along_road)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/base_local_planner_params.yaml" command="load" />
+  </node>
+</launch>

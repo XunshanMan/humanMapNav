@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="ypspur_ros_bridge" type="ypspur_ros_bridge" name="ypspur_ros_bridge" respawn="true" />
+        <node pkg="urg_node" type="urg_node" name="urg_node" respawn="true" />
+        <node pkg="sensor_tf_test" name="sensor_tf_test" type="sensor_tf_test" />
+        <node pkg="gmapping" name="slam_gmapping" type="slam_gmapping" args="scan:=scan"/>
+</launch>

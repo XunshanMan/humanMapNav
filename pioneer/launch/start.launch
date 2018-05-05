@@ -1,0 +1,26 @@
+<launch>
+<!--  2018/4/23 lzw
+本启动文件针对离线建图时收集数据所用,打开摄像头与激光雷达
+在此之外,还需要手动启动record记录相关话题消息并且保存.
+record指令如下:
+rosbag record -O /home/jk/bag_lzw/newMainBuilding/4.23.bag /tf /scan /kinect2/hd/image_color_rect /kinect2/hd/image_depth_rect /kinect2/hd/camera_info
+-->
+	<!-- 启动kinect节点 -->
+	<node pkg="kinect2_bridge" name="kinect2_bridge" type="kinect2_bridge" args="_reg_method:=cpu _depth_method:=cpu" output="screen" />
+
+	<!-- 启动雷达节点 -->
+	<node pkg="rplidar_ros" name="rplidarNode" type="rplidarNode" output="screen" />
+
+	<!-- 启动控制器 -->
+	<node pkg="rosaria_client" name="teleop" type="teleop" output="screen" />
+
+	<!-- 启动底盘驱动 -->
+	<node pkg="rosaria" name="RosAria" type="RosAria" args="_port:=10.10.100.254:8101 _cmd_vel_timeout:=0" output="screen" />
+
+	<!-- 启动tf: laser_frame->base_link -->
+	<node pkg="sensor_tf_test" name="sensor_tf_test" type="sensor_tf_test" output="screen" />
+
+	<!-- 启动rviz -->
+        <node pkg="rviz" name="rviz" type="rviz" output="screen"/>
+
+</launch>

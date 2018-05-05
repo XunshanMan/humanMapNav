@@ -1,0 +1,21 @@
+<launch>
+<!--		<node pkg="ypspur_ros_bridge" type="ypspur_ros_bridge" name="ypspur_ros_bridge" respawn="true" /> -->
+        <node pkg="urg_node" type="urg_node" name="urg_node" respawn="true" />
+        <node pkg="doornumber" type="cam_thinker" name="doornumber" respawn="true" output="screen"/>
+        <node pkg="amcl" type="amcl" respawn="true" name="amcl" />
+        <node pkg="map_server" type="map_server" name="map_server" args="/home/liaoziwei/ros_project/map/corridor/3L_Full.yaml" respawn="true" />
+        <node pkg="sensor_tf_test" name="sensor_tf_test" type="sensor_tf_test" />
+        <!-- <node pkg="cv_camera" name="cv_camera" type="cv_camera_node" launch-prefix=”xetrm -e”/> -->
+        <!-- <node pkg="dn_finder" name="dn_finder_node" type="dn_finder_node" respawn="true" output="screen" /> -->
+
+<!--
+<master auto="start"/>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ros_along_road)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/base_local_planner_params.yaml" command="load" />
+  </node>
+-->
+</launch>

@@ -1,0 +1,15 @@
+<launch>
+        <node pkg="amcl" type="amcl" respawn="true" name="amcl" />
+        <node pkg="map_server" type="map_server" name="map_server" args="/home/liaoziwei/ros_project/map/humanMap/3L4th.yaml" respawn="true" />
+        <node pkg="sensor_tf_test" name="sensor_tf_test" type="sensor_tf_test" />
+        <node pkg="urg_node" type="urg_node" name="urg_node" respawn="true" />
+
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ros_along_road)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/base_local_planner_params.yaml" command="load" />
+  </node>
+</launch>

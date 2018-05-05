@@ -21,7 +21,7 @@ def doCanny(a):
 	cv.imshow(WINDOW_NAME, image_resize_canny)
 
 def main():
-	image = cv.imread("/home/liaoziwei/Desktop/mapRecognition/pic/map_3G.jpg")
+	image = cv.imread("/home/jk/catkin_lzw/src/map_deal/script/mapRecognition/pic/map.JPG")
 
 	height, width = image.shape[:2]
 
@@ -30,7 +30,7 @@ def main():
 
 	cv.imshow("resize pic", image_resize)
 
-	cv.imwrite("/home/liaoziwei/Desktop/mapRecognition/pic/map_3G_resize_3.jpg",image_resize)
+	cv.imwrite("/home/jk/catkin_lzw/src/map_deal/script/mapRecognition/pic/map_3G_resize_3.jpg",image_resize)
 
 
 	# cv.imshow("pic", image_resize)

@@ -1,0 +1,32 @@
+<launch>
+        <node pkg="map_deal" type="scale_node.py" name="scale_node" respawn="false" output="screen"/>
+        <node pkg="doornumber" type="cam_thinker" name="doornumber" respawn="false" output="screen"/>
+        <node pkg="amcl" type="amcl" respawn="true" name="amcl" />
+        <node pkg="dn_finder" name="dn_finder_node" type="dn_finder_node" respawn="true" output="screen" />
+        <node pkg="uimap" name="uimap_node" type="uimap_node" respawn="true" args="/home/jk/catkin_lzw/src/map_deal/script/mapRecognition/pic/map_resize.jpg" output="screen" />
+        <node pkg="gmapping" name="gmapping" type="slam_gmapping" respawn="true" output="screen">
+		<remap from="scan" to="scan"/>
+		<param name="maxRange" value="5.0"/>	
+	</node>
+<!--        <node pkg="rqt_console" name="rqt_console" type="rqt_console" output="screen"/> -->
+        <node pkg="rviz" name="rviz" type="rviz" output="screen"/>
+        <node pkg="rosaria" type="RosAria" name="RosAria" args="_port:=10.10.100.254:8101 /RosAria/cmd_vel:=/cmd_vel" respawn="false" />
+        <node name="base2laser" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 1 /base_link /laser 100"/>
+	 <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+	         <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
+	         <param name="serial_baudrate"     type="int"    value="115200"/>
+	         <param name="frame_id"            type="string" value="laser"/>
+	         <param name="inverted"            type="bool"   value="false"/>
+	         <param name="angle_compensate"    type="bool"   value="true"/>
+	 </node>
+
+<!-- scale_node is running under python IDE -->
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ros_along_road)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ros_along_road)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ros_along_road)/base_local_planner_params.yaml" command="load" />
+  </node>
+</launch>

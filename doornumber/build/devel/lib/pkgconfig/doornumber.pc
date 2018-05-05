@@ -1,0 +1,8 @@
+prefix=/home/jk/catkin_lzw/src/doornumber/build/devel
+
+Name: doornumber
+Description: Description of doornumber
+Version: 0.0.0
+Cflags: -I/home/jk/catkin_lzw/src/doornumber/build/devel/include
+Libs: -L/home/jk/catkin_lzw/src/doornumber/build/devel/lib 
+Requires: 

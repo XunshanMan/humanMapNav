@@ -259,7 +259,7 @@ class mapMatcher(object):
 
         #cv2.namedWindow("smallmap", cv2.WINDOW_NORMAL)
         cv2.imshow("smallmap", self.smallmap)
-        cv2.imwrite("/home/liaoziwei/Desktop/mapMatchResult/" + mapname + ".jpg", img)
+        cv2.imwrite("/home/jk/catkin_lzw/src/map_deal/script/corridorRecog/resultpic/matchresult/" + mapname + ".jpg", img)
 
     def setbigstart(self,x, y):
         self.bigstart[0] = x

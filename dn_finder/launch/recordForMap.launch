@@ -1,0 +1,8 @@
+<launch>
+        <node pkg="urg_node" type="urg_node" name="urg_node" respawn="true" />
+        <node pkg="sensor_tf_test" name="sensor_tf_test" type="sensor_tf_test" />
+        <!-- <node pkg="joystick_commander" name="joystick_commander" type="joystick_commander" args="/dev/input/js0"/> -->
+        <!-- <node pkg="cv_camera" name="cv_camera" type="cv_camera_node" launch-prefix=”xetrm -e”/> -->
+        <!-- <node pkg="dn_finder" name="dn_finder_node" type="dn_finder_node" respawn="true" output="screen" /> -->
+
+</launch>

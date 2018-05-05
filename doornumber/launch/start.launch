@@ -1,0 +1,4 @@
+<launch>
+<node pkg="doornumber" name="cam_thinker" type="cam_thinker" output="screen" />
+
+</launch>

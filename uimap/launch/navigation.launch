@@ -1,0 +1,16 @@
+<launch>
+	<arg name=”map-name” default=”/home/jk/bag_lzw/map/map3A3th.yaml”/>
+	<node pkg="rosaria" type="RosAria" name="RosAria" args="_port:=10.10.100.254:8101" respawn="true" />
+        <node name="base2laser" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 1 /base_link /laser 100"/>
+	<node name="rviz" pkg="rviz" type="rviz"/>
+	<node name="amcl" pkg="amcl" type="amcl" />
+	<node name="map_server" pkg="map_server" type="map_server" args=$(arg map-name) />
+  <node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+  <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
+  <param name="serial_baudrate"     type="int"    value="115200"/>
+  <param name="frame_id"            type="string" value="laser"/>
+  <param name="inverted"            type="bool"   value="false"/>
+  <param name="angle_compensate"    type="bool"   value="true"/>
+  </node>
+
+</launch>

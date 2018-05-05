@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# coding: utf-8
 # this program is for testing and debugging
 # the main function can be used to test the automation adjustment on multiple files.
 
@@ -397,8 +399,9 @@ def AutoMatching(slamMap):
     #imgHuman_dealt = deal(imgHuman, "- Human", (134, 781))
 
     imgHuman = cv2.imread('/home/liaoziwei/Desktop/mapRecognition/pic/map_3G_SLAMmap.jpg')
-    imgHuman_dealt = deal(imgHuman, "- Human", (410, 179))
-
+    #imgHuman_dealt = deal(imgHuman, "- Human", (410, 179))
+    imgHuman_dealt = cv2.imread('/home/jk/catkin_lzw/src/map_deal/script/mapRecognition/pic/'
+	                        'map_corridor_expand.jpg', cv2.IMREAD_GRAYSCALE)
 
     # templatemath_img(imgSlam_dealt, imgHuman_dealt, 0.5)
     start_slam = [2000, 2000]  # initial point on slam map
@@ -471,16 +474,29 @@ def callback(data):
     new_map = True
     _map = data
 
+# 由于对人类地图原图扩充了,使得放大不至于超出边界,因此对于原图中下达的搜索坐标需要进行平移
+def add_expand_vector(p):
+    # 设置偏差值
 
+    # 扩充后的地图尺寸
+    size = (2000, 2000)
+    origin_width = 1344
+    origin_height = 1008
+    vx = size[0]/2 - origin_width/2
+    vy = size[1]/2 - origin_height/2
+    return [p[0] + vx, p[1] + vy, p[2]]
 
 def getCommand(data):
     rospy.loginfo(rospy.get_caller_id() + " get command.")
     global newCommand
+    global homestate
     newCommand = True
 
     homestate[0] = int(data.data[0]) #x
     homestate[1] = int(data.data[1]) #y
     homestate[2] = data.data[2] #angle
+
+    homestate = add_expand_vector(homestate)
 
 # Deal with the Final Point to make sure it is in the map. Before Send the command to
 # dn_finder node.
@@ -627,7 +643,7 @@ def calculateAndSendSearchingGoal(oT):
 
         cv2.imshow("imageROI", imageROI)
 
-        cv2.imwrite("/home/liaoziwei/Desktop/runSpace/searchGoalCalcu/imageROI_%d.jpg" % try_again_times, imageROI)
+        cv2.imwrite("/home/jk/catkin_lzw/src/map_deal/script/corridorRecog/resultpic/imageROI_%d.jpg" % try_again_times, imageROI)
 
         points, theta, flag = fromLineGetSearchPoints_web(imageROI, 15, 8)
 
@@ -737,16 +753,16 @@ def dealWithNewMap():
         # ---------- Draw all the Odoms.
         for j, i in enumerate(amclPixels_UnderMap):
             color_circle = (0, 0, 255)
-            color_line = (125, 125, 125)
+            color_line = (0, 255, 255)
 
-            cv2.circle(imageForShow, (i[0], i[1]), 3, color_circle)
+            cv2.circle(imageForShow, (i[0], i[1]), 7, color_circle, -1)
 
             lineLength = 40
             pt2 = [0, 0]
             pt2[0] = int(i[0] + lineLength * math.cos(i[2]))
             pt2[1] = int(i[1] + lineLength * math.sin(i[2]))
 
-            cv2.line(imageForShow, (i[0], i[1]), tuple(pt2), color_line)
+            cv2.line(imageForShow, (i[0], i[1]), tuple(pt2), color_line, 3)
 
 
 
@@ -782,9 +798,13 @@ def main_node():
 
     # for 3L human map
     # imgHuman_dealt = deal(imgHuman, "- Human", (134, 781))
-    imgHuman_dealt = deal(imgHuman, "- Human", (410, 179))
+    # imgHuman_dealt = deal(imgHuman, "- Human", (410, 179))
+    # 此处直接读取人类地图, 该人类地图的走廊在人为简单辅助下提取
+    # 经过扩充之后的地图
+    imgHuman_dealt = cv2.imread('/home/jk/catkin_lzw/src/map_deal/script/mapRecognition/pic/'
+	                        'map_corridor_expand.jpg', cv2.IMREAD_GRAYSCALE)
 
-    cv2.imwrite( "/home/liaoziwei/Desktop/runSpace/map_dealt.jpg", imgHuman_dealt)
+    # cv2.imwrite( "/home/liaoziwei/Desktop/runSpace/map_dealt.jpg", imgHuman_dealt)
 
 
     puber = rospy.Publisher("/map_scale", Float32MultiArray, queue_size=1)
@@ -846,7 +866,7 @@ def main_node():
                     mt.updateLocalCenter(amclPixels_UnderMap[len(amclPixels_UnderMap)-1])
                 cv2.imshow("imageForShow", imageForShow)
                 if write_times!=match_times:
-                    cv2.imwrite("/home/liaoziwei/Desktop/mapMatchResult/Goal_" + match_times.__str__() + ".jpg", imageForShow)
+                    cv2.imwrite("/home/jk/catkin_lzw/src/map_deal/script/corridorRecog/resultpic/Goal_" + match_times.__str__() + ".jpg", imageForShow)
                     write_times = match_times
                     # To make sure only write one time to save the time
                 cv2.waitKey(30)
@@ -884,18 +904,22 @@ def main_node():
                 pubData.data.append(match_rotate / 180.0 * math.pi)  # rotate changes to pi
                 print ("Publish scale: %f, rotate: %f, vector %d,%d" % (
                     scale, match_rotate, match_vector[0], match_vector[1]))
+                puber.publish(pubData)
+                pubDataSaved.append(pubData)
 
             else:
                 if len(pubDataSaved) > 0:
                     pubData = pubDataSaved[len(pubDataSaved) - 1]
+                    puber.publish(pubData)
+                    pubDataSaved.append(pubData)
+
                 else:
 
                     print ("Position ERROR, Choose last time.")
                     newCommand = False
                     time_last = tm.time()
 
-            puber.publish(pubData)
-            pubDataSaved.append(pubData)
+
             newCommand = False
             time_last = tm.time()
         else:

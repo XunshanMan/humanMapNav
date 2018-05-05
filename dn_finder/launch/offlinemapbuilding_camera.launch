@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="ypspur_ros_bridge" type="ypspur_ros_bridge" name="ypspur_ros_bridge" respawn="true" />
+        <node pkg="urg_node" type="urg_node" name="urg_node" respawn="true" />
+        <node pkg="sensor_tf_test" name="sensor_tf_test" type="sensor_tf_test" />
+        <node pkg="cv_camera" name="cv_camera" type="cv_camera_node" respawn="true" />
+</launch>
