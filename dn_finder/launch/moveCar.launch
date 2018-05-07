@@ -1,0 +1,5 @@
+<launch>
+        <node pkg="rosaria" type="RosAria" name="RosAria" args="_port:=10.10.100.254:8101" respawn="false" />
+        <node pkg="rosaria_client" type="teleop" name="teleop" output="screen" />
+	
+</launch>

@@ -1,12 +1,23 @@
 <launch>
         <node pkg="map_deal" type="scale_node.py" name="scale_node" respawn="false" output="screen"/>
         <node pkg="doornumber" type="cam_thinker" name="doornumber" respawn="false" output="screen"/>
-        <node pkg="amcl" type="amcl" respawn="true" name="amcl" />
+
+<!-- According to Mitsudome Sann, it's unnecessary to add an AMCL. -->
+<!--        <node pkg="amcl" type="amcl" respawn="true" name="amcl" />  -->
         <node pkg="dn_finder" name="dn_finder_node" type="dn_finder_node" respawn="true" output="screen" />
         <node pkg="uimap" name="uimap_node" type="uimap_node" respawn="true" args="/home/jk/catkin_lzw/src/map_deal/script/mapRecognition/pic/map_resize.jpg" output="screen" />
+
+	<!-- change scan to scan_filtered -->
+	<node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">
+		<rosparam command="load" file="$(find laser_filters)/examples/range_filter.yaml" />
+	</node>
+
         <node pkg="gmapping" name="gmapping" type="slam_gmapping" respawn="true" output="screen">
-		<remap from="scan" to="scan"/>
+		<remap from="scan" to="scan_filtered"/>
 		<param name="maxRange" value="5.0"/>	
+		<param name="throttle_scans" value="3"/>    <!-- 每n个激光值处理1个 -->	
+		<param name="map_update_interval" value="1"/>    <!-- 地图更新的时间间隔s, 默认是5s -->	
+		<param name="lskip" value="2"/>    <!-- 每次扫描中,每n支光束处理其中1支 -->	
 	</node>
 <!--        <node pkg="rqt_console" name="rqt_console" type="rqt_console" output="screen"/> -->
         <node pkg="rviz" name="rviz" type="rviz" output="screen"/>

@@ -383,7 +383,7 @@ def main():
             mt.showRelation()
             mt.compareCost()
             mt.autoMatch(3, 100)
-            mt.showRelation(maps[id] + "_" + mt.resize_scale.__str__())
+            mt.showRelation(maps[id] + "_scale" + mt.resize_scale.__str__() + "_rot" + mt.rotate_angle.__str__())
 
             state_auto = auto
 

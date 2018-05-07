@@ -64,7 +64,7 @@ class mapMatcher(object):
 
         # the switch for local_matching mode
         self.local_mode = True
-        self.sideLength = 1000
+        self.sideLength = 200
         self.local_center = tuple(self.small2big(self.smallstart))
         self.local_center_smallmap = self.smallstart
 
